@@ -25,32 +25,31 @@ class MainWindow(QMainWindow):
         layout = QVBoxLayout()
         layout1 = QHBoxLayout()
         nameLabel = QLabel("Name")
-        nameLineEdit = QLineEdit()
+        self.nameLineEdit = QLineEdit()
         nameLabel.setFixedSize(QSize(120,60))
-        nameLineEdit.setFixedSize(QSize(230,60))  
+        self.nameLineEdit.setFixedSize(QSize(230,60))  
         layout1.addWidget(nameLabel)
-        layout1.addWidget(nameLineEdit)
+        layout1.addWidget(self.nameLineEdit)
         layout2 = QHBoxLayout()
         ageLabel = QLabel("Age")
-        ageSpinBox = QSpinBox()
+        self.ageSpinBox = QSpinBox()
         ageLabel.setFixedSize(QSize(120,60))
-        ageSpinBox.setFixedSize(QSize(230,60))  
+        self.ageSpinBox.setFixedSize(QSize(230,60))  
         layout2.addWidget(ageLabel)
-        layout2.addWidget(ageSpinBox)
+        layout2.addWidget(self.ageSpinBox)
         layout3 = QHBoxLayout()
         genderLabel = QLabel("Gender")
-        genderComboBox = QComboBox()
+        self.genderComboBox = QComboBox()
         genderLabel.setFixedSize(QSize(120,60))
-        genderComboBox.setFixedSize(QSize(230,60)) 
-        genderComboBox.addItems(["Male", "Female"])
+        self.genderComboBox.setFixedSize(QSize(230,60)) 
+        self.genderComboBox.addItems(["Male", "Female"])
         layout3.addWidget(genderLabel)
-        layout3.addWidget(genderComboBox)
+        layout3.addWidget(self.genderComboBox)
         layout4 = QHBoxLayout()
         okPushButton = QPushButton("OK")
         cancelPushButton = QPushButton("Cancel")
         okPushButton.setFixedSize(QSize(230,60))
         cancelPushButton.setFixedSize(QSize(230,60))
-        cancelPushButton.clicked.connect(self.close) 
         layout4.addWidget(okPushButton)
         layout4.addWidget(cancelPushButton)
 
@@ -62,9 +61,18 @@ class MainWindow(QMainWindow):
         widget = QWidget()
         widget.setLayout(layout)
 
+        
+        cancelPushButton.clicked.connect(self.close) 
+        okPushButton.clicked.connect(self.okClick)
+
         # Set the central widget of the Window. Widget will expand
         # to take up all the space in the window by default.
         self.setCentralWidget(widget)
+    
+    def okClick(self):
+        print("Name", self.nameLineEdit.text())
+        print("Age", self.ageSpinBox.text())
+        print("Gender", self.genderComboBox.currentText())
 
 
 app = QApplication(sys.argv)
