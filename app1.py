@@ -1,4 +1,6 @@
 import sys
+import openpyxl as xl
+
 
 from PySide2.QtCore import Qt,QSize
 from PySide2.QtWidgets import (
@@ -70,9 +72,18 @@ class MainWindow(QMainWindow):
         self.setCentralWidget(widget)
     
     def okClick(self):
+        file=xl.load_workbook('hello.xlsx')
+        namesheet = file.worksheets[0]
         print("Name", self.nameLineEdit.text())
         print("Age", self.ageSpinBox.text())
         print("Gender", self.genderComboBox.currentText())
+        i=1
+        while namesheet.cell(i,1).value!=None:
+            i=i+1
+        namesheet.cell(i,1).value = self.nameLineEdit.text()
+        namesheet.cell(i,2).value = self.ageSpinBox.text()
+        namesheet.cell(i,3).value = self.genderComboBox.currentText()
+        file.save('hello.xlsx')
 
 
 app = QApplication(sys.argv)
