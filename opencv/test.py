@@ -20,7 +20,7 @@ options = ObjectDetectorOptions(
       num_threads=4,
       score_threshold=DETECTION_THRESHOLD,
 )
-model_path="model_fruit.tflite"
+model_path="model.tflite"
 detector = ObjectDetector(model_path=model_path, options=options)
 
 
