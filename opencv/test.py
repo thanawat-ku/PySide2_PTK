@@ -12,7 +12,7 @@ DETECTION_THRESHOLD = 0.6 #@param {type:"number"}
 TEMP_FILE = 'fruit.jpg'
 #!wget -q -O $TEMP_FILE $INPUT_IMAGE_URL
 im = Image.open(TEMP_FILE)
-im.thumbnail((512, 512), Image.ANTIALIAS)
+#im.thumbnail((512, 512), Image.ANTIALIAS)
 image_np = np.asarray(im)
 
 # Load the TFLite model
@@ -23,19 +23,25 @@ options = ObjectDetectorOptions(
 model_path="model.tflite"
 detector = ObjectDetector(model_path=model_path, options=options)
 
+cap = cv2.VideoCapture(0)
+while(True):
+    ret, frame = cap.read()
+    frame1=cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+    image_np = np.asarray(frame1)
+    # Run object detection estimation using the model.
+    start_time=time.time()
+    detections = detector.detect(image_np)
+    end_time=time.time()
+    print(end_time-start_time)
 
-# Run object detection estimation using the model.
-start_time=time.time()
-detections = detector.detect(image_np)
-end_time=time.time()
-print(end_time-start_time)
+    # Draw keypoints and edges on input image
+    image_np = visualize(image_np, detections)
 
-# Draw keypoints and edges on input image
-image_np = visualize(image_np, detections)
+    # Show the detection result
+    img_rgb = cv2.cvtColor(image_np, cv2.COLOR_BGR2RGB)
+    cv2.imshow('',img_rgb)
+    if cv2.waitKey(1) & 0xFF == ord('q'):
+        break
 
-# Show the detection result
-img_rgb = cv2.cvtColor(image_np, cv2.COLOR_BGR2RGB)
-cv2.imshow('',img_rgb)
-cv2.waitKey(0)
+cap.release()
 cv2.destroyAllWindows()
-
